@@ -8,7 +8,7 @@ list.files()
 #Read census data
 cdata <- read.csv("Census08-12.csv")
 
-Q1. What Community Area has what % households below poverty, in order?
+~~Q1. What Community Area has what % households below poverty, in order?~~
 
 #Get plyr package for 'rename' fn
 library("plyr", lib.loc="/Library/Frameworks/R.framework/Versions/3.1/Resources/library")
@@ -29,7 +29,7 @@ cd2 <- cdata[order(cdata$percBelowPov),]
 cd2.1 <- cd2[,c("cAreaName", "percBelowPov")]
 cd2.1
 
-Q2. What Community Area has what % households below poverty, in order?
+~~Q2. What Community Area has what % households below poverty, in order?~~
 
 #Sort&show cdata by percBelowPov and perCapitaIncome
 cd3 <- cdata[order(cdata$percBelowPov, cdata$perCapitaIncome),]
