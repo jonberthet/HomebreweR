@@ -1,0 +1,37 @@
+#set wd
+setwd("/Users/jonathanberthet/Desktop/GDrive/Chicago/HomebreweR/Project1/DataSets")
+
+#list files in path
+list.files()
+
+#Read census data
+cdata <- read.csv("Census08-12.csv")
+
+Q1. What Community Area has what % households below poverty, in order?
+
+#Get plyr package for 'rename' fn
+library("plyr", lib.loc="/Library/Frameworks/R.framework/Versions/3.1/Resources/library")
+
+#Change names
+cdata <- rename(cdata, c("Community.Area.Number" = "cAreaNum",
+"COMMUNITY.AREA.NAME" = "cAreaName",
+"PERCENT.OF.HOUSING.CROWDED" = "perHouseCrowd",
+"PERCENT.HOUSEHOLDS.BELOW.POVERTY" = "percBelowPov",
+"PERCENT.AGED.16..UNEMPLOYED" = "perc16Unempl",
+"PERCENT.AGED.25..WITHOUT.HIGH.SCHOOL.DIPLOMA" = "per25NoDiploma",
+"PERCENT.AGED.UNDER.18.OR.OVER.64" = "percU18O64",
+"PER.CAPITA.INCOME" = "perCapitaIncome",
+"HARDSHIP.INDEX" = "HIndex"))
+
+#Sort&Show cdata by percBelowPov
+cd2 <- cdata[order(cdata$percBelowPov),]
+cd2.1 <- cd2[,c("cAreaName", "percBelowPov")]
+cd2.1
+
+Q2. What Community Area has what % households below poverty, in order?
+
+#Sort&show cdata by percBelowPov and perCapitaIncome
+cd3 <- cdata[order(cdata$percBelowPov, cdata$perCapitaIncome),]
+cd3.1 <- cd3[,c("cAreaName", "percBelowPov", "perCapitaIncome")]
+cd3.1
+
