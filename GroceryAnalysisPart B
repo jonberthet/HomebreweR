@@ -1,0 +1,44 @@
+
+#Load file
+x <- read.csv("chicagogrocery.csv")
+
+#Produce result summaries
+summary(x)
+
+#Transform data into local data frame
+grocery <- tbl_df(x)
+
+#Filter by community area for Grocery Store Detail
+summary(filter(grocery,communityname=="ENGLEWOOD"))
+
+#The following are the top 3 bottom per capita communities across Chicago detailing
+#the grocery stores that are currently operating
+#Englewood
+7400 S HALSTED FOOD AND LIQUORS, INC.
+ALDI INC #92
+H & A FOOD MARKET, INC. 
+J K & S FOOD & LIQUOR
+
+
+#Fuller Park
+200 LIQUORS 
+4343 PETES FRESH MARKET
+7400 S HALSTED FOOD AND LIQUORS, INC
+
+#Riverdale
+J R GROCERY STORE
+KEY FOOD LIQUOR 
+
+
+#The following are the top 3 per capita communities across Chicago detailing
+#the grocery stores that are currently operating
+#Edison Park
+HAPPY FOODS
+
+#Mount Greenwood
+FAMILY PRIDE
+JEWEL FOOD STORE #3114
+S & T PROVISION CO INC
+
+#Beverly
+CALABRIA IMPORTS, INC.
