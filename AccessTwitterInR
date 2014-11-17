@@ -1,0 +1,95 @@
+#I used this source:
+http://beyondvalence.blogspot.com/2014/01/text-mining-retrieving-text-from.html
+
+---------STEP 1
+#Accessing Twitter Data
+#Create a Twitter Application. Use a website that you have access to. It can be a simple link to your blog or github account.
+https://apps.twitter.com/app/new
+
+---------STEP 2
+#Go to URL and click on 'OAuth Signature Generator' near the bottom of the page.
+#Click on the app you just created
+https://dev.twitter.com/oauth/reference/post/oauth2/token
+
+---------STEP 3
+#Now, you should see consumer key, consumer secret, access token, access token secret
+#In R Console, Configure RCurl options by copy/pasting 2 lines of code directly below
+RCurloptions <- list(capath=system.file("curlSSL", "cacert.pem", package = "RCurl"), ssl.verifypeer= FALSE)
+options(RCurloptions = RCurloptions)
+
+---------STEP 4
+#Put in your own 'consumer key' and 'consumer secret' obtained from Step 2.
+#I posted my consumer key and secret below. Yours should be different.
+consumerKey <- "KguV4MPd0bXZUYLVWkv3Q"
+consumerSecret <- "FpIvSD9WsLFTVaZQwQUp01Eaiu4YLWBMJsvRoEoe6Nc"
+
+---------STEP 5
+#Type in console:
+getTwitterOAuth(consumerKey, consumerSecret)
+
+#Now, you should see something like this:
+'
+To enable the connection, please direct your web browser to: 
+http://api.twitter.com/oauth/authorize?oauth_token=vPdDSc7RA6XYDqGj13drb0VnVhQeg7Sd
+When complete, record the PIN given to you and provide it here: 
+'
+#Now,
+#5a. Copy the URL provided
+#5b. Put the URL in a browser
+#5c. Log into twitter like it asks
+#5d. Copy the oauth_verifyer code, which is in the URL of the link after you login.
+      #The oauth_verifyer IS YOUR PIN and paste it in where it asks for your PIN in the console.
+
+
+---------STEP 6
+#call cred to show that the 'handshake' completed. You should see something like this:
+cred
+'
+Reference class object of class "OAuth"
+Field "consumerKey":
+....
+....
+'
+
+---------STEP 7
+#Instead of using the getTwitterOauth() function, we need to setup manually an OAuth object.
+#Make sure the internet addresses begin with https://, and you have loaded the twitteR, ROAuth, and XML packages.
+
+#Configure RCurl Options
+RCurloptions <- list(capath=system.file("curlSSL", "cacert.pem", package = "RCurl"), ssl.verifypeer= FALSE)
+options(RCurloptions = RCurlOptions)
+
+
+
+cred <- OAuthFactory$new(consumerKey = consumerKey,
+                  + consumerSecret = consumerSecret,
+                  + requestURL = "https://api.twitter.com/oauth/request_token",
+                  + accessURL = "https://api.twitter.com/oauth/access_token",
+                  + authURL = "https://api.twitter.com/oauth/authorize")
+
+---------STEP 8
+#Saves Twitter authorization info. Put this in a file & remember where you put it.
+save(cred, file="~./cred.Rdata")
+load("cred.Rdata")
+
+
+---------STEP 9
+#CONGRATULATIONS, you can access tweets through R!!!!
+#Checkout some functions to access tweets
+#Look here for ideas:
+#I'll look for cool ways to get info
+http://cran.r-project.org/web/packages/twitteR/twitteR.pdf
+?userTimeline
+http://rstudio-pubs-static.s3.amazonaws.com/896_b77039de16b34e94b59199fc8be81d6b.html
+
+#Small example:
+#Get all 10 tweets that mention cats
+  cat.tweets<-searchTwitter("cats",n=10)
+#Put tweets into data frame
+  cat.tweets.df = ldply(cat.tweets, function(t) t$toDataFrame() )
+#See variables/columns provided by the tweet
+  names(tweets.df)
+
+
+
+
