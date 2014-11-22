@@ -20,12 +20,25 @@ options(RCurloptions = RCurloptions)
 ---------STEP 4
 #Put in your own 'consumer key' and 'consumer secret' obtained from Step 2.
 #I posted my consumer key and secret below. Yours should be different.
-consumerKey <- "KguV4MPd0bXZUYLVWkv3Q"
-consumerSecret <- "FpIvSD9WsLFTVaZQwQUp01Eaiu4YLWBMJsvRoEoe6Nc"
+consumerKey <- "tl8WiVyVlFMJuUL6g6NK7dieC"
+consumerSecret <- "TqgMaxjILO6BjhYXdL6Gd2YRNN9zFAMsNe6vdsBPzpDi8Ce4j7"
 
 ---------STEP 5
+
+#Download twitteR package
+library("twitteR", lib.loc="~/Library/R/3.1/library")
+
 #Type in console:
-getTwitterOAuth(consumerKey, consumerSecret)
+library(ROAuth)
+reqURL <- "https://api.twitter.com/oauth/request_token"
+accessURL <- "https://api.twitter.com/oauth/access_token"
+authURL <- "https://api.twitter.com/oauth/authorize"
+twitCred <- OAuthFactory$new(consumerKey=consumerKey,
+          consumerSecret=consumerSecret,
+          requestURL=reqURL,
+          accessURL=accessURL,
+          authURL=authURL)
+twitCred$handshake()
 
 #Now, you should see something like this:
 '
@@ -43,7 +56,7 @@ When complete, record the PIN given to you and provide it here:
 
 ---------STEP 6
 #call cred to show that the 'handshake' completed. You should see something like this:
-cred
+registerTwitterOAuth(twitCred)
 '
 Reference class object of class "OAuth"
 Field "consumerKey":
@@ -51,29 +64,16 @@ Field "consumerKey":
 ....
 '
 
+
+
+
 ---------STEP 7
-#Instead of using the getTwitterOauth() function, we need to setup manually an OAuth object.
-#Make sure the internet addresses begin with https://, and you have loaded the twitteR, ROAuth, and XML packages.
-
-#Configure RCurl Options
-RCurloptions <- list(capath=system.file("curlSSL", "cacert.pem", package = "RCurl"), ssl.verifypeer= FALSE)
-options(RCurloptions = RCurlOptions)
-
-
-
-cred <- OAuthFactory$new(consumerKey = consumerKey,
-                  + consumerSecret = consumerSecret,
-                  + requestURL = "https://api.twitter.com/oauth/request_token",
-                  + accessURL = "https://api.twitter.com/oauth/access_token",
-                  + authURL = "https://api.twitter.com/oauth/authorize")
-
----------STEP 8
 #Saves Twitter authorization info. Put this in a file & remember where you put it.
 save(cred, file="~./cred.Rdata")
 load("cred.Rdata")
 
 
----------STEP 9
+---------STEP 8
 #CONGRATULATIONS, you can access tweets through R!!!!
 #Checkout some functions to access tweets
 #Look here for ideas:
@@ -84,11 +84,11 @@ http://rstudio-pubs-static.s3.amazonaws.com/896_b77039de16b34e94b59199fc8be81d6b
 
 #Small example:
 #Get all 10 tweets that mention cats
-  cat.tweets<-searchTwitter("cats",n=10)
+cat.tweets<-searchTwitter("cats",n=10)
 #Put tweets into data frame
-  cat.tweets.df = ldply(cat.tweets, function(t) t$toDataFrame() )
+cat.tweets.df = ldply(cat.tweets, function(t) t$toDataFrame() )
 #See variables/columns provided by the tweet
-  names(tweets.df)
+names(tweets.df)
 
 
 
