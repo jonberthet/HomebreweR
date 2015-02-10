@@ -1,0 +1,391 @@
+getSymbols('pg')
+getSymbols('ko')
+getSymbols('pm')
+getSymbols('pep')
+
+pg = PG['2013/201402']
+ko = KO['2013/201402']
+pm = PM['2013/201402']
+pep = PEP['2013/201402']
+
+pg = pg[,4]
+ko = ko[,4]
+pm = pm[,4]
+pep = pep[,4]
+tech = cbind(pg,ko,pm,pep)
+
+pep13 = pep[1:252]
+ko13 = ko[1:252]
+pg13 = pg[1:252]
+pm13 = pm[1:252]
+tech13 = cbind(pep13,ko13,pg13,pm13)
+
+cor(tech13)
+#RESULT:
+           PEP.Close  KO.Close    PG.Close    PM.Close
+PEP.Close 1.00000000 0.6735342  0.84982764  0.07398096
+KO.Close  0.67353417 1.0000000  0.53191498  0.57419329
+PG.Close  0.84982764 0.5319150  1.00000000 -0.03280819
+PM.Close  0.07398096 0.5741933 -0.03280819  1.00000000
+
+
+
+#Regressions for the 1-year period
+reg1 = lm(pep13 ~ ko13 + pg13 + pm13)
+reg1
+#RESULT
+Call:
+lm(formula = pep13 ~ ko13 + pg13 + pm13)
+
+Coefficients:
+(Intercept)         ko13         pg13         pm13  
+    -6.9199       1.1847       0.7491      -0.2081  
+
+
+summary(reg1)
+#RESULT
+Call:
+lm(formula = pep13 ~ ko13 + pg13 + pm13)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-4.7220 -1.2796  0.2505  1.3618  3.7897 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -6.91993    4.41148  -1.569    0.118    
+ko13         1.18467    0.12531   9.454  < 2e-16 ***
+pg13         0.74911    0.04671  16.038  < 2e-16 ***
+pm13        -0.20807    0.05175  -4.021 7.71e-05 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 1.86 on 248 degrees of freedom
+Multiple R-squared:  0.8034,	Adjusted R-squared:  0.8011 
+F-statistic: 337.9 on 3 and 248 DF,  p-value: < 2.2e-16
+
+
+reg2 = lm(ko13 ~ pep13 + pg13 + pm13)
+reg2
+#RESULT
+Call:
+lm(formula = ko13 ~ pep13 + pg13 + pm13)
+
+Coefficients:
+(Intercept)        pep13         pg13         pm13  
+    -2.7649       0.2236       0.0169       0.2588  
+
+summary(reg2)
+#RESULT
+Call:
+lm(formula = ko13 ~ pep13 + pg13 + pm13)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1.77761 -0.58030  0.00718  0.62918  2.01231 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -2.76493    1.91817  -1.441    0.151    
+pep13        0.22363    0.02365   9.454   <2e-16 ***
+pg13         0.01690    0.02895   0.584    0.560    
+pm13         0.25875    0.01639  15.790   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.808 on 248 degrees of freedom
+Multiple R-squared:  0.7305,	Adjusted R-squared:  0.7272 
+F-statistic: 224.1 on 3 and 248 DF,  p-value: < 2.2e-16
+
+
+reg3 = lm(pg13 ~ pep13 + ko13 + pm13)
+reg3
+#RESULT
+Call:
+lm(formula = pg13 ~ pep13 + ko13 + pm13)
+
+Coefficients:
+(Intercept)        pep13         ko13         pm13  
+   31.84798      0.67962      0.08121     -0.12393  
+
+summary(reg3)
+#RESULT
+Call:
+lm(formula = pg13 ~ pep13 + ko13 + pm13)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-3.4024 -1.4900  0.0282  1.2623  4.3733 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 31.84798    3.70692   8.592 9.71e-16 ***
+pep13        0.67962    0.04238  16.038  < 2e-16 ***
+ko13         0.08121    0.13911   0.584   0.5599    
+pm13        -0.12393    0.05026  -2.466   0.0144 *  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 1.771 on 248 degrees of freedom
+Multiple R-squared:  0.7318,	Adjusted R-squared:  0.7285 
+F-statistic: 225.5 on 3 and 248 DF,  p-value: < 2.2e-16
+
+
+reg4 = lm(pm13 ~ pep13 + ko13 + pg13)
+reg4
+#RESULT
+Call:
+lm(formula = pm13 ~ pep13 + ko13 + pg13)
+
+Coefficients:
+(Intercept)        pep13         ko13         pg13  
+    51.3625      -0.2941       1.9375      -0.1931  
+
+summary(reg4)
+#RESULT
+Call:
+lm(formula = pm13 ~ pep13 + ko13 + pg13)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-4.6402 -1.6909  0.2435  1.5598  5.7433 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 51.36251    4.14045  12.405  < 2e-16 ***
+pep13       -0.29410    0.07315  -4.021 7.71e-05 ***
+ko13         1.93747    0.12270  15.790  < 2e-16 ***
+pg13        -0.19308    0.07831  -2.466   0.0144 *  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 2.211 on 248 degrees of freedom
+Multiple R-squared:  0.5205,	Adjusted R-squared:  0.5147 
+F-statistic: 89.73 on 3 and 248 DF,  p-value: < 2.2e-16
+
+
+#Regressions for the 6 month period
+pepH = pep[125:252]
+koH = ko[125:252]
+pmH = pm[125:252]
+pgH = pg[125:252]
+
+reg5 = lm(pepH ~ koH + pmH + pgH)
+reg5
+#RESULT
+Call:
+lm(formula = pepH ~ koH + pmH + pgH)
+
+Coefficients:
+(Intercept)          koH          pmH          pgH  
+   -13.9423       0.5766       0.4932       0.3811  
+
+summary(reg5)
+#RESULT
+Call:
+lm(formula = pepH ~ koH + pmH + pgH)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-2.09008 -0.73598 -0.09584  0.77323  2.59268 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -13.94231    4.06597  -3.429 0.000823 ***
+koH           0.57657    0.12453   4.630 9.09e-06 ***
+pmH           0.49319    0.04650  10.606  < 2e-16 ***
+pgH           0.38110    0.05156   7.391 1.88e-11 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.9676 on 124 degrees of freedom
+Multiple R-squared:  0.8236,	Adjusted R-squared:  0.8193 
+F-statistic:   193 on 3 and 124 DF,  p-value: < 2.2e-16
+
+
+reg6 = lm(koH ~ pepH + pmH + pgH)
+reg6
+#RESULT
+Call:
+lm(formula = koH ~ pepH + pmH + pgH)
+
+Coefficients:
+(Intercept)         pepH          pmH          pgH  
+   7.500427     0.255637    -0.003752     0.139021  
+
+summary(reg6)
+#RESULT
+Call:
+lm(formula = koH ~ pepH + pmH + pgH)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1.12547 -0.52787 -0.08453  0.29997  1.80153 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  7.500427   2.751588   2.726 0.007342 ** 
+pepH         0.255637   0.055214   4.630 9.09e-06 ***
+pmH         -0.003752   0.042758  -0.088 0.930222    
+pgH          0.139021   0.039270   3.540 0.000564 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.6443 on 124 degrees of freedom
+Multiple R-squared:  0.6396,	Adjusted R-squared:  0.6309 
+F-statistic: 73.35 on 3 and 124 DF,  p-value: < 2.2e-16
+
+
+reg7 = lm(pmH ~ pepH + koH + pgH)
+reg7
+#RESULT
+Call:
+lm(formula = pmH ~ pepH + koH + pgH)
+
+Coefficients:
+(Intercept)         pepH          koH          pgH  
+   39.76409      0.96449     -0.01655     -0.38999  
+
+summary(reg7)
+#RESULT
+Call:
+lm(formula = pmH ~ pepH + koH + pgH)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-2.7676 -0.9709  0.0720  0.9455  3.7575 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 39.76409    4.75868   8.356  1.1e-13 ***
+pepH         0.96449    0.09094  10.606  < 2e-16 ***
+koH         -0.01655    0.18860  -0.088     0.93    
+pgH         -0.38999    0.07914  -4.928  2.6e-06 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 1.353 on 124 degrees of freedom
+Multiple R-squared:  0.5986,	Adjusted R-squared:  0.5889 
+F-statistic: 61.64 on 3 and 124 DF,  p-value: < 2.2e-16
+
+
+
+
+reg8 = lm(pgH ~ pepH + koH + pmH)
+reg8
+#RESULT
+Call:
+lm(formula = pgH ~ pepH + koH + pmH)
+
+Coefficients:
+(Intercept)         pepH          koH          pmH  
+    24.8560       0.8025       0.6603      -0.4199  
+
+summary(reg8)
+#RESULT
+Call:
+lm(formula = pgH ~ pepH + koH + pmH)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-3.6802 -0.8000 -0.0037  0.9358  3.1510 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 24.85599    5.75594   4.318 3.19e-05 ***
+pepH         0.80250    0.10857   7.391 1.88e-11 ***
+koH          0.66026    0.18651   3.540 0.000564 ***
+pmH         -0.41992    0.08521  -4.928 2.60e-06 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 1.404 on 124 degrees of freedom
+Multiple R-squared:  0.6562,	Adjusted R-squared:  0.6479 
+F-statistic: 78.91 on 3 and 124 DF,  p-value: < 2.2e-16
+
+pep14 = pep[253:273]
+ko14 = ko[253:273]
+pg14 = pg[253:273]
+pm14 = pm[253:273]
+
+dfpep14 = data.frame(pep14)
+dfko14 = data.frame(ko14)
+dfpg14 = data.frame(pg14)
+dfpm14 = data.frame(pm14)
+
+
+
+
+#The following is a side by side comparison of the R-Square and Adjusted R-Squared
+Average prices (Jan 2014)
+mean(pep14)
+[1] 82.2881
+mean(ko14)
+[1] 39.47333
+mean(pg14)
+[1] 79.60286
+mean(pm14)
+[1] 82.74381
+
+###########
+#Predictions from 1 year regression models
+#Prediction1
+prediction1 = 1.18467*(39.47333) + 0.74911*(79.60286) + -0.20807*(82.74381) + -6.91993
+prediction1
+[1] 82.25773
+Pepsi Jan Stock (avg):  82.2881
+Difference:  -0.03037
+
+#Prediction2
+prediction2 = 0.22363*(82.2881) + 0.01690*(79.60286) + 0.25875*(82.74381) + -2.76493
+prediction2
+[1] 38.39241
+KO Jan Stock (avg):  39.47333
+Difference:  -1.08092
+
+#Prediction 3
+prediction3 = 0.67962*(82.2881) + 0.08121*(39.47333) + -0.12393*(82.74381) + 31.84798
+prediction3
+[1] 80.72381
+PG Jan Stock (avg):  79.60286
+Difference:  1.12095
+
+#Prediction 4
+prediction4 = -0.29410*(82.2881) + 1.93747*(39.47333) + -0.19308*(79.60286) + 51.36251
+prediction4
+[1] 88.27025
+PM Jan Stock (avg):  82.74381
+Difference:  5.52644
+
+
+
+
+###########
+#Predictions from 6-month regression models 
+#Prediction 5
+prediction5 = 0.57657*(39.47333) + 0.49319*(82.74381) + 0.38110*(79.60286) + -13.94231
+prediction5
+[1] 79.9619
+PEP Jan stock (avg):  82.2881
+Difference:  -2.3262
+
+#Prediction 6
+prediction6 = 0.255637*(82.2881) + -0.003752*(82.74381) + 0.139021*(79.60286) + 7.500427
+prediction6
+[1] 39.29232
+KO Jan Stock (avg):  39.47333
+Difference:  -0.18101
+
+#Prediction 7
+prediction7 = 0.96449*(82.2881) + -0.01655*(39.47333) + -0.38999*(79.60286) + 39.76409
+prediction7
+[1] 87.43254
+PM Jan Stock (avg):  82.74381
+Difference:  4.68873
+
+#Prediction8
+prediction8 = 0.80250*(82.2881) + 0.66026*(39.47333) + -0.41992*(82.74381) + 24.85599
+prediction8
+[1] 82.20907
+PG Jan Stock (avg): 79.60286
+Difference:  2.60621
